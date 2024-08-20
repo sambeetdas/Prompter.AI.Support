@@ -14,8 +14,18 @@ namespace Prompter.AI.Support
             var config = new InferenceConfigModel
             {
                 ModelProvider = ModelProviderEnum.HuggingFace,
-                ModelName = "mistralai/Mistral-7B-Instruct-v0.3",
-                AuthKey = "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",
+                URL = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.3",
+                AuthKey = "",
+                Prefix = new List<String>
+                {
+                    $"1.Question asked is above within ''.",
+                    $"2.'DataSource' hold all the data for the above 'Question'.",
+                    $"3.Asked question should be filtered from the 'DataSource' with the help 'Keys'.",
+                    $"4.Phrase the answer in English.",
+                    $"5.Encapsulate the answer within <<>>.",
+                    $"6.Below are the details to evaluate the answer for the Question asked."
+
+                },
                 ToolModel = new ToolModel
                 {
                     APISource = new List<APISourceDetails>
@@ -26,7 +36,10 @@ namespace Prompter.AI.Support
                             Description = "This api is used to get the list of phones",
                             Url = "https://api.restful-api.dev/objects",
                             Method = "GET",
-                            Headers = new Dictionary<string, string>(),
+                            Headers = new Dictionary<string, string>
+                            {
+                                { "Accept", "application/json" }
+                            },
                             Request = string.Empty,
                             ResponseKeys = new List<ResponseKeys>()
                             {
@@ -69,7 +82,10 @@ namespace Prompter.AI.Support
                             Description = "This api is used to get the list of breeds of dogs",
                             Url = "https://dogapi.dog/api/v2/breeds",
                             Method = "GET",
-                            Headers = new Dictionary<string, string>(),
+                            Headers = new Dictionary<string, string>
+                            {
+                                { "Accept", "application/json" }
+                            },
                             Request = string.Empty,
                             ResponseKeys = new List<ResponseKeys>()
                             {
