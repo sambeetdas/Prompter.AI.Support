@@ -16,6 +16,9 @@ namespace Prompter.AI.Support
                 ModelProvider = ModelProviderEnum.HuggingFace,
                 URL = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.3",
                 AuthKey = "",
+                MaxNewToken = 100,
+                TopP = 0.1,
+                Temperature = 0.1,
                 Prefix = new List<String>
                 {
                     $"1.Question asked is above within ''.",
