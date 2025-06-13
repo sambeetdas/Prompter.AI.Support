@@ -1,0 +1,47 @@
+Database Schema:
+Table: ref_review
+-review: nvarchar(max), NOT NULL : The historical review texts data used for training the model
+-sentiment: nvarchar(50), NOT NULL : The sentiment for review text through which the model is trained where values are positive sentiment and negative
+
+Table: sys_model
+-ref_model_id: uniqueidentifier, NOT NULL, PRIMARY KEY
+-model_code: nvarchar(20) : The code of the model
+-model_alg: nvarchar(max) : The algorithm used for the model
+-model_type: nvarchar(max) : The type of the model, e.g., classification, regression
+-model_accuracy: nvarchar(20) : The accuracy of the model
+-model_auc: nvarchar(20) : The AUC (Area Under the Curve) of the model
+-model_recall: nvarchar(20) : The recall of the model
+-model_precision: nvarchar(20) : The precision of the model
+-model_f_score: nvarchar(20) : The F1 score of the model
+-description: nvarchar(20) : The description of the model
+-status: nchar(1) : The status of the model
+-create_date: datetime
+-update_date: datetime
+-create_user: nvarchar(20)
+-update_user: nvarchar(20)
+
+Table: sys_review_consumer
+-create_date: datetime
+-product_name: varchar(max) : The name of the product
+-brand: varchar(max) : The brand of the product
+-manufacturer: varchar(max) : The manufacturer of the product
+-manufacturer_number: varchar(max)
+-reviews_date: datetime : The date when the review was created
+-reviews_text: varchar(max) : The review text provided by the user
+-reviews_title: varchar(max) : The title of the review
+-review_id: uniqueidentifier
+-sentiment: int : The sentiment is predicted based on user's review where positive sentiment is 1, negative sentiment is 0
+
+Table: sys_user
+-user_id: uniqueidentifier, NOT NULL, PRIMARY KEY
+-user_name: nchar(10), NOT NULL : The name of the user
+-password: nchar(10), NOT NULL : The password of the user
+
+**Example:**
+If the input question is: "Show all product names and their sentiment where sentiment is negative."
+
+The generated output should be:
+
+SELECT product_name, sentiment
+FROM dbo.sys_review_consumer
+WHERE sentiment = 0;

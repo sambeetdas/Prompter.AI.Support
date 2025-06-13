@@ -1,0 +1,40 @@
+
+- string? taxonomy 
+- string? designation : The id or code or name of the product. This is the key field to filter the product.
+- string? short_description : The short description of the product
+- string? description : The description of the product
+- string? category : The category or name of the product
+- string? title : The title or name of the product
+- string? benefits : The benefits or name of the product
+- string? system
+- string? language
+- string? source
+- string? id
+- string? source_tag
+- string? _rid
+- string? _self
+- string? _etag
+- string? _attachments
+- string? _ts
+- List<Dimension> dimensions
+- List<Properties> properties
+
+Each Dimension has:
+- string? name : The dimension type of the product. e.g. Width, Outside diameter, Bore diameter
+- string? value : The value of the dimension type of the product.
+- string? unit : The unit of the dimension value of the product. e.g. mm, inch, cm
+- string? symbol : The symbol of the unit of the value of the product.
+
+Each Properties has:
+- string? name : The name or type of properties of the product.
+- string? value : The value of the properties of the product.
+
+
+**Example:**
+To calculate the average width where width is stored in dimensions with name "Width":
+
+products
+    .SelectMany(product => product.dimensions
+        .Where(d => d.name == "Width" && double.TryParse(d.value, out _))
+        .Select(d => double.Parse(d.value)))
+    .Average()
