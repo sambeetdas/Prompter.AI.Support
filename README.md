@@ -21,12 +21,17 @@ It is a developer guide to implement solutions with **Prompt.AI**
 
 Steps:
 1. Install the nuget for Prompt.AI (**dotnet add package Prompter.AI**)
+   
    ![image](https://github.com/user-attachments/assets/0c4f37ef-9cda-462d-bb8c-f5f9af3444a4)
 
-3. Set the configs and define the scope.
+
+2. Set the configs and define the scope.
+   
    ![image](https://github.com/user-attachments/assets/cc525a20-e6fd-42ed-88d3-7f46969a1702)
 
-4. Build APIs.
+
+3. Build APIs.
+   
 ![image](https://github.com/user-attachments/assets/cd68eb55-de3f-4859-83bf-c772c94e1423)
 ![image](https://github.com/user-attachments/assets/9f6315d5-0f53-4558-849c-eb1593961edf)
 
