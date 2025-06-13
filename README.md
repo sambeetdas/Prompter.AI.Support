@@ -1,20 +1,22 @@
 **What is Prompter.AI ?**
+
 Prompter.AI is a dotnet library designed to simplify the development of applications using large language models (LLMs). Prompter can integrate with various data sources, allowing applications to pull in and process information dynamically.
 
 Prompter.AI supports inference with LLMs
--Azure Open AI
--HuggingFace
--Gemini (In-Progress)
+- Azure Open AI
+- HuggingFace
+- Gemini (In-Progress)
 
 Prompter.AI supports inference type as source
--Microsoft SQL
--In-Memory JSON
--API
--My SQL
--Oracle DB
--PostGreSQL
+- Microsoft SQL
+- In-Memory JSON
+- API
+- My SQL (In-Progress)
+- Oracle DB (In-Progress)
+- PostGreSQL (In-Progress)
 
 **What is Prompter.AI.Support ?**
+
 It is a developer guide to implement solutions with **Prompt.AI**
 
 Steps:
@@ -27,4 +29,7 @@ Steps:
 ![image](https://github.com/user-attachments/assets/9f6315d5-0f53-4558-849c-eb1593961edf)
 
 
-This repo also holds a html page to integrate with the above APIs and build char based applications.
+**This repository also includes an HTML page that integrates with the above APIs to build chat-based applications.**
+
+![image](https://github.com/user-attachments/assets/547f3012-38f2-40a7-9cff-a23c87dc33cf)
+
