@@ -37,11 +37,3 @@ Table: sys_user
 -user_name: nchar(10), NOT NULL : The name of the user
 -password: nchar(10), NOT NULL : The password of the user
 
-**Example:**
-If the input question is: "Show all product names and their sentiment where sentiment is negative."
-
-The generated output should be:
-
-SELECT product_name, sentiment
-FROM dbo.sys_review_consumer
-WHERE sentiment = 0;

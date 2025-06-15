@@ -28,13 +28,3 @@ Each Dimension has:
 Each Properties has:
 - string? name : The name or type of properties of the product.
 - string? value : The value of the properties of the product.
-
-
-**Example:**
-To calculate the average width where width is stored in dimensions with name "Width":
-
-products
-    .SelectMany(product => product.dimensions
-        .Where(d => d.name == "Width" && double.TryParse(d.value, out _))
-        .Select(d => double.Parse(d.value)))
-    .Average()
