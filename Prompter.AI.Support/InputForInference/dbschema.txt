@@ -1,9 +1,9 @@
 Database Schema:
-Table: ref_review
+Table: dbo.ref_review
 -review: nvarchar(max), NOT NULL : The historical review texts data used for training the model
 -sentiment: nvarchar(50), NOT NULL : The sentiment for review text through which the model is trained where values are positive sentiment and negative
 
-Table: sys_model
+Table: dbo.sys_model
 -ref_model_id: uniqueidentifier, NOT NULL, PRIMARY KEY
 -model_code: nvarchar(20) : The code of the model
 -model_alg: nvarchar(max) : The algorithm used for the model
@@ -20,7 +20,7 @@ Table: sys_model
 -create_user: nvarchar(20)
 -update_user: nvarchar(20)
 
-Table: sys_review_consumer
+Table: dbo.sys_review_consumer
 -create_date: datetime
 -product_name: varchar(max) : The name of the product
 -brand: varchar(max) : The brand of the product
@@ -32,7 +32,7 @@ Table: sys_review_consumer
 -review_id: uniqueidentifier
 -sentiment: int : The sentiment is predicted based on user's review where positive sentiment is 1, negative sentiment is 0
 
-Table: sys_user
+Table: dbo.sys_user
 -user_id: uniqueidentifier, NOT NULL, PRIMARY KEY
 -user_name: nchar(10), NOT NULL : The name of the user
 -password: nchar(10), NOT NULL : The password of the user
