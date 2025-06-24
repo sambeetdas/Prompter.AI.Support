@@ -30,10 +30,14 @@ Steps:
    ![image](https://github.com/user-attachments/assets/cc525a20-e6fd-42ed-88d3-7f46969a1702)
 
 
-3. Build APIs.
+3. Build APIs to get response for the user asked question. The API should interact with the method **ProcessQuestionWithDataAsync(requestLLM)** for inference.
    
 ![image](https://github.com/user-attachments/assets/cd68eb55-de3f-4859-83bf-c772c94e1423)
 ![image](https://github.com/user-attachments/assets/9f6315d5-0f53-4558-849c-eb1593961edf)
+
+4. It is also used to generate Query for the question asked by using the method **ProcessQuestionWithQueryAsync(requestLLM)**.
+
+   ![image](https://github.com/user-attachments/assets/4a4fd5f0-fc6d-42ff-a800-19a2a2d6e4d1)
 
 
 **This repository also includes an HTML page that integrates with the above APIs to build chat-based applications.**
