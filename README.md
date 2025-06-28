@@ -1,6 +1,6 @@
 **What is Prompter.AI ?**
 
-Prompter.AI is a dotnet library designed to simplify the development of applications using large language models (LLMs). Prompter can integrate with various data sources, allowing applications to pull in and process information dynamically.
+Prompter.AI is a dotnet library designed to simplify the development of applications using text-to-text generation large language models (LLMs). Prompter can integrate with various data sources, allowing applications to pull in and process information dynamically.
 
 Prompter.AI supports inference with LLMs
 - Azure Open AI
