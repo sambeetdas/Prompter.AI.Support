@@ -4,8 +4,8 @@ Prompter.AI is a dotnet library designed to simplify the development of applicat
 
 Prompter.AI supports inference with LLMs
 - Azure Open AI
-- HuggingFace
-- Gemini (In-Progress)
+- HuggingFace (Llama, Mistral)
+- Gemini
 
 Prompter.AI supports inference type as source
 - Microsoft SQL
