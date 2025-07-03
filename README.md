@@ -42,7 +42,7 @@ Steps:
 
 **This repository also includes an HTML page that integrates with the above APIs to build chat-based applications.**
 
-![image](https://github.com/user-attachments/assets/547f3012-38f2-40a7-9cff-a23c87dc33cf)
+![image](https://github.com/user-attachments/assets/b44b4a6d-e117-4877-a295-2e1750f33e58)
 
 
 
