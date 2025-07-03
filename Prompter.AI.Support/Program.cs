@@ -50,7 +50,7 @@ app.MapPost("/sql-inference", async (RequestModel request, IPromptService prompt
         DataSource = new DataSourceConfig
         {
             Type = DataSourceType.SqlServer,
-            ConnectionString = "Server=localhost;Database=TestDB;Trusted_Connection=true;",
+            ConnectionString = "Server=localhost;Database=EmployeeDB;Trusted_Connection=true;",
             DBSchema = File.ReadAllText("InputForInference\\dbschema.txt")
         }
     };

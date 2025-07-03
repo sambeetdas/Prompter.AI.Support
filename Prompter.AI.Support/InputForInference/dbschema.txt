@@ -1,39 +1,134 @@
 Database Schema:
-Table: dbo.ref_review
--review: nvarchar(max), NOT NULL : The historical review texts data used for training the model
--sentiment: nvarchar(50), NOT NULL : The sentiment for review text through which the model is trained where values are positive sentiment and negative
 
-Table: dbo.sys_model
--ref_model_id: uniqueidentifier, NOT NULL, PRIMARY KEY
--model_code: nvarchar(20) : The code of the model
--model_alg: nvarchar(max) : The algorithm used for the model
--model_type: nvarchar(max) : The type of the model, e.g., classification, regression
--model_accuracy: nvarchar(20) : The accuracy of the model
--model_auc: nvarchar(20) : The AUC (Area Under the Curve) of the model
--model_recall: nvarchar(20) : The recall of the model
--model_precision: nvarchar(20) : The precision of the model
--model_f_score: nvarchar(20) : The F1 score of the model
--description: nvarchar(20) : The description of the model
--status: nchar(1) : The status of the model
--create_date: datetime
--update_date: datetime
--create_user: nvarchar(20)
--update_user: nvarchar(20)
+-- Create Departments Table
+-- This table stores information about the different departments within the organization.
+CREATE TABLE Departments (
+    DepartmentID INT IDENTITY(1,1) PRIMARY KEY,   -- Unique identifier for each department.
+    DepartmentName NVARCHAR(100) NOT NULL UNIQUE, -- The name of the department (e.g., 'Human Resources', 'Engineering'). Must be unique.
+    Description NVARCHAR(500),                     -- A brief description of the department's purpose and responsibilities.
+    Budget DECIMAL(15,2),                          -- The allocated annual budget for the department.
+    Location NVARCHAR(100),                        -- Physical location of the department (e.g., 'Building A, Floor 3').
+    CreatedDate DATETIME2 DEFAULT GETDATE(),       -- Timestamp when the department record was first created.
+    IsActive BIT DEFAULT 1                         -- A flag (1 for active, 0 for inactive) to indicate if the department is currently operational.
+);
+GO
 
-Table: dbo.sys_review_consumer
--create_date: datetime
--product_name: varchar(max) : The name of the product
--brand: varchar(max) : The brand of the product
--manufacturer: varchar(max) : The manufacturer of the product
--manufacturer_number: varchar(max)
--reviews_date: datetime : The date when the review was created
--reviews_text: varchar(max) : The review text provided by the user
--reviews_title: varchar(max) : The title of the review
--review_id: uniqueidentifier
--sentiment: int : The sentiment is predicted based on user's review where positive sentiment is 1, negative sentiment is 0
+-- Create Positions Table
+-- This table defines the various job positions available within the company.
+CREATE TABLE Positions (
+    PositionID INT IDENTITY(1,1) PRIMARY KEY,      -- Unique identifier for each job position.
+    PositionTitle NVARCHAR(100) NOT NULL,          -- The title of the job (e.g., 'Senior Software Engineer', 'Marketing Manager').
+    Description NVARCHAR(500),                     -- A brief description of the position's responsibilities and duties.
+    MinSalary DECIMAL(10,2),                       -- The minimum salary for this position, defining the lower end of the salary band.
+    MaxSalary DECIMAL(10,2),                       -- The maximum salary for this position, defining the upper end of the salary band.
+    RequiredEducation NVARCHAR(100),               -- Minimum educational qualification required (e.g., 'Bachelor's Degree in CS').
+    ExperienceLevel NVARCHAR(50),                  -- The level of experience required (e.g., 'Entry-Level', 'Mid-Level', 'Senior').
+    CreatedDate DATETIME2 DEFAULT GETDATE(),       -- Timestamp when the position record was first created.
+    IsActive BIT DEFAULT 1                         -- A flag (1 for active, 0 for inactive) indicating if the company is currently hiring for this position.
+);
+GO
 
-Table: dbo.sys_user
--user_id: uniqueidentifier, NOT NULL, PRIMARY KEY
--user_name: nchar(10), NOT NULL : The name of the user
--password: nchar(10), NOT NULL : The password of the user
+-- Create Employees Table
+-- This table holds all personal and professional information for each employee.
+CREATE TABLE Employees (
+    EmployeeID INT IDENTITY(1,1) PRIMARY KEY,      -- Unique identifier for each employee.
+    FirstName NVARCHAR(50) NOT NULL,               -- The employee's first name.
+    LastName NVARCHAR(50) NOT NULL,                -- The employee's last name.
+    Email NVARCHAR(100) UNIQUE NOT NULL,           -- The employee's unique corporate email address.
+    Phone NVARCHAR(20),                            -- The employee's contact phone number.
+    DateOfBirth DATE,                              -- The employee's date of birth.
+    HireDate DATE NOT NULL,                        -- The date when the employee was hired.
+    DepartmentID INT,                              -- Foreign key linking to the Departments table to specify the employee's department.
+    PositionID INT,                                -- Foreign key linking to the Positions table to specify the employee's job title.
+    ManagerID INT,                                 -- Self-referencing foreign key linking to another employee who is their manager.
+    Address NVARCHAR(255),                         -- The employee's home street address.
+    City NVARCHAR(50),                             -- The city part of the employee's address.
+    State NVARCHAR(50),                            -- The state or province part of the employee's address.
+    ZipCode NVARCHAR(10),                          -- The postal or zip code part of the employee's address.
+    Country NVARCHAR(50) DEFAULT 'USA',            -- The country of the employee's address, defaults to 'USA'.
+    EmergencyContact NVARCHAR(100),                -- Name of the person to contact in an emergency.
+    EmergencyPhone NVARCHAR(20),                   -- Phone number of the emergency contact.
+    Status NVARCHAR(20) DEFAULT 'Active',          -- Current employment status of the employee (e.g., 'Active', 'Terminated', 'On Leave').
+    CreatedDate DATETIME2 DEFAULT GETDATE(),       -- Timestamp when the employee record was first created.
+    LastModified DATETIME2 DEFAULT GETDATE(),      -- Timestamp of the last time the employee record was updated.
+    
+    CONSTRAINT FK_Employees_Department FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID),
+    CONSTRAINT FK_Employees_Position FOREIGN KEY (PositionID) REFERENCES Positions(PositionID),
+    CONSTRAINT FK_Employees_Manager FOREIGN KEY (ManagerID) REFERENCES Employees(EmployeeID),
+    CONSTRAINT CHK_Employee_Status CHECK (Status IN ('Active', 'Inactive', 'Terminated', 'On Leave'))
+);
+GO
 
+-- Create Projects Table
+-- This table stores information about company projects.
+CREATE TABLE Projects (
+    ProjectID INT IDENTITY(1,1) PRIMARY KEY,       -- Unique identifier for each project.
+    ProjectName NVARCHAR(100) NOT NULL,            -- The name of the project.
+    Description NVARCHAR(1000),                    -- A detailed description of the project's goals and scope.
+    StartDate DATE,                                -- The planned or actual start date of the project.
+    EndDate DATE,                                  -- The planned or actual end date of the project.
+    Budget DECIMAL(15,2),                          -- The total allocated budget for the project.
+    Status NVARCHAR(20) DEFAULT 'Planning',        -- Current status of the project (e.g., 'In Progress', 'Completed').
+    ProjectManagerID INT,                          -- Foreign key linking to the employee who is managing the project.
+    DepartmentID INT,                              -- Foreign key linking to the primary department responsible for the project.
+    CreatedDate DATETIME2 DEFAULT GETDATE(),       -- Timestamp when the project record was created.
+    
+    CONSTRAINT FK_Projects_Manager FOREIGN KEY (ProjectManagerID) REFERENCES Employees(EmployeeID),
+    CONSTRAINT FK_Projects_Department FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID),
+    CONSTRAINT CHK_Project_Status CHECK (Status IN ('Planning', 'In Progress', 'Completed', 'On Hold', 'Cancelled'))
+);
+GO
+
+-- Create Salaries Table
+-- This table tracks the salary history for each employee.
+CREATE TABLE Salaries (
+    SalaryID INT IDENTITY(1,1) PRIMARY KEY,        -- Unique identifier for this specific salary record.
+    EmployeeID INT NOT NULL,                       -- Foreign key linking to the employee this salary record belongs to.
+    BaseSalary DECIMAL(10,2) NOT NULL,             -- The base salary amount, before bonuses or commissions.
+    Bonus DECIMAL(10,2) DEFAULT 0,                 -- Any bonus amount paid for a specific period.
+    Commission DECIMAL(10,2) DEFAULT 0,            -- Any commission amount earned for a specific period.
+    EffectiveDate DATE NOT NULL,                   -- The date from which this salary is effective.
+    EndDate DATE,                                  -- The date until which this salary was effective (NULL for current salary).
+    SalaryType NVARCHAR(20) DEFAULT 'Annual',      -- The frequency of the salary payment (e.g., 'Annual', 'Monthly', 'Hourly').
+    Currency NVARCHAR(10) DEFAULT 'USD',           -- The currency of the salary (e.g., 'USD', 'EUR').
+    CreatedDate DATETIME2 DEFAULT GETDATE(),       -- Timestamp when the salary record was created.
+    
+    CONSTRAINT FK_Salaries_Employee FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
+    CONSTRAINT CHK_Salary_Type CHECK (SalaryType IN ('Annual', 'Monthly', 'Hourly'))
+);
+GO
+
+-- Create Employee-Projects Junction Table (Many-to-Many)
+-- This table links employees to the projects they are working on, enabling a many-to-many relationship.
+CREATE TABLE EmployeeProjects (
+    EmployeeProjectID INT IDENTITY(1,1) PRIMARY KEY, -- Unique identifier for the specific employee-project assignment.
+    EmployeeID INT NOT NULL,                         -- Foreign key linking to the employee assigned to the project.
+    ProjectID INT NOT NULL,                          -- Foreign key linking to the project the employee is assigned to.
+    Role NVARCHAR(100),                              -- The specific role of the employee on this project (e.g., 'Developer', 'QA Tester').
+    AssignedDate DATE DEFAULT GETDATE(),             -- The date the employee was officially assigned to the project.
+    CompletionDate DATE,                             -- The date the employee completed their work on the project.
+    HoursWorked DECIMAL(8,2) DEFAULT 0,              -- The total number of hours the employee has logged for this project.
+    Status NVARCHAR(20) DEFAULT 'Assigned',          -- The status of the employee's assignment on the project (e.g., 'In Progress').
+    
+    CONSTRAINT FK_EmployeeProjects_Employee FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
+    CONSTRAINT FK_EmployeeProjects_Project FOREIGN KEY (ProjectID) REFERENCES Projects(ProjectID),
+    CONSTRAINT CHK_EmployeeProject_Status CHECK (Status IN ('Assigned', 'In Progress', 'Completed', 'Paused'))
+);
+GO
+
+-- Create Indexes for Performance
+-- These indexes are created on foreign keys and frequently queried columns to speed up data retrieval.
+CREATE INDEX IX_Employees_Department ON Employees(DepartmentID);
+CREATE INDEX IX_Employees_Position ON Employees(PositionID);
+CREATE INDEX IX_Employees_Manager ON Employees(ManagerID);
+CREATE INDEX IX_Employees_Email ON Employees(Email);
+CREATE INDEX IX_Employees_Status ON Employees(Status);
+CREATE INDEX IX_Salaries_Employee ON Salaries(EmployeeID);
+CREATE INDEX IX_Projects_Manager ON Projects(ProjectManagerID);
+CREATE INDEX IX_EmployeeProjects_Employee ON EmployeeProjects(EmployeeID);
+CREATE INDEX IX_EmployeeProjects_Project ON EmployeeProjects(ProjectID);
+GO
+
+Guide Lines
+---------------
+--schema of the tables are dbo
