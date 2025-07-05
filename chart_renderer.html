@@ -159,18 +159,6 @@
                 <textarea id="userQuestion" placeholder="Ask for data that can be visualized in a chart."></textarea>
             </div>
 
-            <!--<div class="input-group">
-                <label for="chartType">Preferred Chart Type:</label>
-                <select id="chartType">
-                    <option value="auto">Auto-detect</option>
-                    <option value="bar">Bar Chart</option>
-                    <option value="line">Line Chart</option>
-                    <option value="pie">Pie Chart</option>
-                    <option value="doughnut">Doughnut Chart</option>
-                    <option value="radar">Radar Chart</option>
-                </select>
-            </div>-->
-
             <button id="generateChart">Generate Chart</button>
             <button id="clearChart">Clear Chart</button>
 
@@ -367,11 +355,6 @@
          * @returns {string} Chart type
          */
         function determineChartType(chartData) {
-            const selectedType = $('#chartType').val();
-            
-            if (selectedType !== 'auto') {
-                return selectedType;
-            }
 
             // Auto-detect logic
             if (chartData.chartType) {
@@ -413,7 +396,8 @@
                 
                 // Determine chart type
                 const chartType = determineChartType(chartData);
-                
+                console.log('Determined chart type:', chartType);
+
                 // Render chart
                 renderChart(
                     chartData.labels,
