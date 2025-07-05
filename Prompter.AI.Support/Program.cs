@@ -58,6 +58,28 @@ app.MapPost("/sql-inference", async (RequestModel request, IPromptService prompt
     return await promptService.ProcessQuestionWithDataAsync(requestLLM);
 });
 
+///Inference with SQL Server and generate a custom answer based on the input.
+app.MapPost("/sql-inference-chart", async (RequestModel request, IPromptService promptService) =>
+{
+
+
+    var requestLLM = new LLMRequest
+    {
+        Question = request.Question,
+        Provider = LLMProvider.OpenAI,
+        DataSource = new DataSourceConfig
+        {
+            Type = DataSourceType.SqlServer,
+            ConnectionString = "Server=localhost;Database=EmployeeDB;Trusted_Connection=true;",
+            DBSchema = File.ReadAllText("InputForInference\\dbschema.txt")
+        }
+    };
+
+    var result = await promptService.ProcessQuestionWithDataAsync(requestLLM, "{\r\n                \"title\": \"Chart title\",\r\n                \"labels\": [\"label1\", \"label2\", ...],\r\n                \"data\": [value1, value2, ...] or {\"key1\": value1, \"key2\": value2, ...},\r\n                \"chartType\": \"bar|line|pie|doughnut|radar\",\r\n                \"datasetLabel\": \"Dataset name\"\r\n            }");
+
+    return result;
+});
+
 ///Inference with in-memory collection in json format. Based on the input, it will query the json and return results.
 app.MapPost("/json-inference", async (RequestModel request, IPromptService promptService) =>
 {
