@@ -23,17 +23,16 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddPromptDataLLM(config =>
+builder.Services.AddPrompterConfig(config =>
 {
-    config.OpenAI.ApiKey = "your-openai-api-key";
-    config.OpenAI.BaseUrl = "base-url";
-    config.OpenAI.Model = "gpt-4o-mini";
-    config.OpenAI.Version = "2024-08-01-preview";
-    config.DefaultTimeoutSeconds = 30;
+    config.Ollama.BaseUrl = "http://localhost:11434/api/chat";
+    config.Ollama.Model = "llama3:8b";
+    config.DefaultTimeoutSeconds = 10000;
     config.EnableLogging = true;
 });
 
 builder.Services.AddTransient<IPromptService, PromptService>();
+builder.Services.AddTransient<IAgentService, AgentService>();
 
 var app = builder.Build();
 app.UseCors("AllowAll");
@@ -98,6 +97,29 @@ app.MapPost("/json-inference", async (RequestModel request, IPromptService promp
     };
 
     return await promptService.ProcessQuestionWithDataAsync(requestLLM);
+});
+
+
+///Execute Agent
+app.MapPost("/execute-agent", async (RequestModel request, IAgentService agentService) =>
+{
+    var tool = new ToolConfiguration
+    {
+        ToolClass = "PrompterTools",
+        ToolNamespace = "Prompter.AI.Support"
+    };
+
+    var agent = new AgentDefinition
+    {
+        Name = "Broadcaster",
+        Type = "react",
+        Tools = new List<string> { "SayHello", "EchoMessage" },
+        Prompt = "You are a text broadcaster and you have to execute all tools. Determine proper input for the tools."
+    };
+
+    var response = await agentService.AgentInvokeAsync(agent, LLMProvider.Ollama, 20, request.Question, tool);
+    return response;
+
 });
 
 app.Run();
